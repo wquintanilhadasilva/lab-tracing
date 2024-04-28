@@ -1,0 +1,15 @@
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+    # https://stackoverflow.com/a/61194878/4332063
+  level:
+    ROOT: INFO
+server:
+  port: 8080
+spring:
+  application:
+    name: lab-trancing-api2
+  sleuth:
+    sampler:
+      probability: 1.0
+      percentage: 1.0
