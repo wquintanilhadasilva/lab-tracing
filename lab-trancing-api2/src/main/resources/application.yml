@@ -13,6 +13,9 @@ spring:
     sampler:
       percentage: 1.0
 
+tracing:
+  exclude-paths: /css/**,/js/**,/management
+
 management: # https://www.baeldung.com/spring-boot-actuators#2-important-changes
   context-path: /management
   security:

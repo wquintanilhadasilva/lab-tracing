@@ -11,10 +11,12 @@ import java.util.Arrays;
 
 public class RequestTraceFilter extends WebRequestTraceFilter {
 
-    private static final String[] excludedEndpoints = new String[]{"/css/**", "/js/**", "/management"};
+//    private static final String[] excludedEndpoints = new String[]{"/css/**", "/js/**", "/management"};
+    private final String[] excludedEndpoints;
 
-    public RequestTraceFilter(TraceRepository repository, TraceProperties properties) {
+    public RequestTraceFilter(TraceRepository repository, TraceProperties properties, String[] excludedEndpoints) {
         super(repository, properties);
+        this.excludedEndpoints = excludedEndpoints;
     }
 
     @Override
