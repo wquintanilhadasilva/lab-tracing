@@ -1,13 +1,13 @@
 package com.tracing.lab;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LabTrancingApplication2Tests {
+public class LabTrancingApplication2Tests {
 
 	@Test
-	void contextLoads() {
+    public void contextLoads() {
 	}
 
 }

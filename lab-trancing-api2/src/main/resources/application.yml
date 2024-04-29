@@ -11,5 +11,26 @@ spring:
     name: lab-trancing-api2
   sleuth:
     sampler:
-      probability: 1.0
       percentage: 1.0
+
+management: # https://www.baeldung.com/spring-boot-actuators#2-important-changes
+  context-path: /management
+  security:
+    enabled: false
+  defaults:
+    metrics:
+      export:
+        enabled: false
+  health:
+    probes:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: configprops, env, health, info, jhimetrics, logfile, loggers, prometheus, threaddump, metrics, shutdown # include: "*" # include todos os serviços do actuator
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: PT60s # https://stackoverflow.com/a/62412593
+    use-global-registry: false
