@@ -1,5 +1,6 @@
 package com.tracing.lab;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CarService implements FindService<CarParams> {
     @Override
     public boolean match(String model) {
@@ -22,6 +24,7 @@ public class CarService implements FindService<CarParams> {
 
     @Override
     public Domain filter(String model, CarParams params) {
+        log.info("Filtrando Car [{}]", params);
         String parametros = STR."Filtro aplicado: \{params} - modelo \{model}";
         return new Domain(parametros, LocalDateTime.now());
     }
