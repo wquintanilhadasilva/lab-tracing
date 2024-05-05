@@ -1,21 +1,19 @@
 package com.tracing.lab;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import static java.lang.StringTemplate.STR;
-
 @SpringBootApplication
+@Slf4j
 public class LabTrancingApplication1 {
 
 	public static void main(String[] args) {
@@ -32,7 +30,7 @@ public class LabTrancingApplication1 {
 	}
 
 	@RestController
-	@RequestMapping("/api/_search")
+	@RequestMapping("/api/_search/docs")
 	@RequiredArgsConstructor
 	class SearchController {
 
@@ -53,6 +51,19 @@ public class LabTrancingApplication1 {
 			return result.map(ResponseEntity::ok)
 					.orElse(notFound);
 		}
+
+		@GetMapping("/{modelo}/_filter")
+		ResponseEntity<Domain> getWithParams(@PathVariable("modelo") String modelo,
+											 @RequestParam Map<String, List<String>> params) {
+			log.info("Pesquisando modelo [{}] com os parâmetros: [{}]", modelo, params);
+			Domain result = findServices.stream()
+					.filter(s -> s.match(modelo))
+					.findAny()
+					.map(s -> s.filter(modelo, s.params(params)))
+					.orElse(null);
+			return ResponseEntity.ok(result);
+		}
+
 	}
 
 }
