@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @SpringBootApplication
 @Slf4j
+@SuppressWarnings({"unchecked","rawtypes"})
 public class LabTrancingApplication1 {
 
 	public static void main(String[] args) {
