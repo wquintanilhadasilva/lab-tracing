@@ -6,23 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @SuppressWarnings({"rawtypes"})
 public class ServiceCatalog {
 
-    private Map<String, FindService> servicesMap = new HashMap<>();
+    private Map<String, FindService> servicesMap;
 
     public ServiceCatalog(final List<FindService> servicesList){
-        servicesList.forEach(s -> {
-            var tipo = s.getTipo();
-            var modelo = s.getModelo();
-            var key = key(modelo, tipo);
-            if (servicesMap.containsKey(key)) {
-                throw new RuntimeException(STR."Já existe uma implementação para o modelo \{modelo} e \{tipo}");
-            }
-            servicesMap.put(key,s);
-        });
+        servicesMap = servicesList.stream()
+            .collect(Collectors.toMap(
+                k -> key(k.getModelo(), k.getTipo()),
+                s -> s,
+                (existing, replacement) -> {
+                    throw new RuntimeException(STR."Já existe uma implementação para o modelo \{existing.getModelo()} e \{existing.getTipo()}");
+                },
+                HashMap::new
+            ));
     }
 
     private String key(String modelo, String tipo) {
