@@ -72,11 +72,18 @@ public class LabTrancingApplication1 {
 		}
 
 		@PostMapping(path="/_search", consumes= MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-		ResponseEntity<Object> post(@PathVariable("modelo") String modelo,
+		ResponseEntity<SearchResult> post(@PathVariable("modelo") String modelo,
 												   @PathVariable("tipo") String tipo,
 												   @RequestBody (required = true) Map<String, Object> params) {
-			log.info("Pesquisando modelo [{}] Tipo [{}] com os parâmetros: [{}]", modelo, tipo, params);
-			return new ResponseEntity(params, HttpStatus.OK);
+			log.info("Pesquisa POST modelo [{}] Tipo [{}] com os parâmetros: [{}]", modelo, tipo, params);
+
+			SearchResult result = findServices.stream()
+					.filter(s -> s.match(modelo))
+					.findAny()
+					.map(s -> s.filter(modelo, tipo, s.buildParam(params)))
+					.orElse(null);
+			return new ResponseEntity<SearchResult>(result, HttpStatus.OK);
+
 		}
 
 	}

@@ -8,4 +8,5 @@ public record SearchResult<T>(
 //        RequestParams<?> params,
         String model,
         String tipo,
-        LocalDateTime time){}
+        LocalDateTime time,
+        String filter){}

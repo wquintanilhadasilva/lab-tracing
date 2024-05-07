@@ -1,7 +1,9 @@
 package com.tracing.lab;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +38,15 @@ public class ComplexBodyParams extends GenericParams<ComplexBodyParams> {
             this.at1 = (String) values.getOrDefault("at1", null);
             this.at2 = (Boolean) values.getOrDefault("at2", null);
             this.at3 = (Integer) values.getOrDefault("at3", null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return MAPPER.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

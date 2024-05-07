@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class AnimalService implements FindService<AnimalParams> {
+public class AnimalService implements FindService<AnimalParams, ComplexBodyParams> {
     @Override
     public boolean match(String model) {
         return "dfe".equals(model);
@@ -27,11 +27,18 @@ public class AnimalService implements FindService<AnimalParams> {
     public SearchResult<Animal> filter(String model, String tipo, AnimalParams params) {
         log.info("Filtrando Animal [{}], Model [{}], Tipo [{}]", params, model, tipo);
         var animal = new Animal(model, tipo,6);
-        return new SearchResult<Animal>(List.of(animal), model, tipo, LocalDateTime.now());
+        return new SearchResult<Animal>(List.of(animal), model, tipo, LocalDateTime.now(), params.toString());
     }
 
     @Override
     public AnimalParams params(Map<String, List<String>> params) {
         return new AnimalParams(params);
+    }
+
+    @Override
+    public SearchResult<Animal> filter(String model, String tipo, ComplexBodyParams params) {
+        log.info("Filtrando Animal [{}], Model [{}], Tipo [{}]", params, model, tipo);
+        var animal = new Animal(model, tipo, 2);
+        return new SearchResult<Animal>(List.of(animal), model, tipo, LocalDateTime.now(), params.toString());
     }
 }

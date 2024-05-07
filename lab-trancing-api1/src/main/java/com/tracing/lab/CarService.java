@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class CarService implements FindService<CarParams> {
+public class CarService implements FindService<CarParams, ComplexBodyParams> {
     @Override
     public boolean match(String model) {
         return "evento".equals(model);
@@ -27,11 +27,18 @@ public class CarService implements FindService<CarParams> {
     public SearchResult<Car> filter(String model, String tipo, CarParams params) {
         log.info("Filtrando Car [{}], Model [{}], Tipo [{}]", params, model, tipo);
         var car = new Car(model, tipo, 2017, "red");
-        return new SearchResult<Car>(List.of(car), model, tipo, LocalDateTime.now());
+        return new SearchResult<Car>(List.of(car), model, tipo, LocalDateTime.now(), params.toString());
     }
 
     @Override
     public CarParams params(Map<String, List<String>> params) {
         return new CarParams(params);
+    }
+
+    @Override
+    public SearchResult<Car> filter(String model, String tipo, ComplexBodyParams params) {
+        log.info("Filtrando Car [{}], Model [{}], Tipo [{}]", params, model, tipo);
+        var car = new Car(model, tipo, 2017, params.getComplexo().getAt1());
+        return new SearchResult<Car>(List.of(car), model, tipo, LocalDateTime.now(), params.toString());
     }
 }
