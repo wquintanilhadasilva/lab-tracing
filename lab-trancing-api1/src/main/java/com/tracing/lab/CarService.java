@@ -13,20 +13,21 @@ import java.util.Optional;
 public class CarService implements FindService<CarParams> {
     @Override
     public boolean match(String model) {
-        return "car".equals(model);
+        return "evento".equals(model);
     }
 
     @Override
-    public Optional<Domain> getById(String model, String id) {
-        var car = new Car(STR."Car Model: \{model} - ID: \{id}", 5, "Red");
-        return Optional.of(new Domain(car, LocalDateTime.now()));
+    public Optional<GetResult<?>> getById(String model, String tipo, String id) {
+        log.info("Consultando por ID Car [{}], Model [{}], Tipo [{}]", id, model, tipo);
+        var car = new Car(model, tipo, 2018, "Green");
+        return Optional.of(new GetResult<Car>(car, LocalDateTime.now()));
     }
 
     @Override
-    public Domain filter(String model, CarParams params) {
-        log.info("Filtrando Car [{}]", params);
-        String parametros = STR."Filtro aplicado: \{params} - modelo \{model}";
-        return new Domain(parametros, LocalDateTime.now());
+    public SearchResult<Car> filter(String model, String tipo, CarParams params) {
+        log.info("Filtrando Car [{}], Model [{}], Tipo [{}]", params, model, tipo);
+        var car = new Car(model, tipo, 2017, "red");
+        return new SearchResult<Car>(List.of(car), model, tipo, LocalDateTime.now());
     }
 
     @Override

@@ -13,20 +13,21 @@ import java.util.Optional;
 public class AnimalService implements FindService<AnimalParams> {
     @Override
     public boolean match(String model) {
-        return "animal".equals(model);
+        return "dfe".equals(model);
     }
 
     @Override
-    public Optional<Domain> getById(String model, String id) {
-        var animal = new Animal(STR."Animal: \{model} - ID: \{id}", 5);
-        return Optional.of(new Domain(animal, LocalDateTime.now()));
+    public Optional<GetResult<?>> getById(String model, String tipo, String id) {
+        log.info("Consultando por ID Animal [{}], Model [{}], Tipo [{}]", id, model, tipo);
+        var animal = new Animal(model, tipo, 5);
+        return Optional.of(new GetResult<Animal>(animal, LocalDateTime.now()));
     }
 
     @Override
-    public Domain filter(String model, AnimalParams params) {
-        log.info("Filtrando Animal [{}]", params);
-        String parametros = STR."Filtro aplicado: \{params} - modelo \{model}";
-        return new Domain(parametros, LocalDateTime.now());
+    public SearchResult<Animal> filter(String model, String tipo, AnimalParams params) {
+        log.info("Filtrando Animal [{}], Model [{}], Tipo [{}]", params, model, tipo);
+        var animal = new Animal(model, tipo,6);
+        return new SearchResult<Animal>(List.of(animal), model, tipo, LocalDateTime.now());
     }
 
     @Override
