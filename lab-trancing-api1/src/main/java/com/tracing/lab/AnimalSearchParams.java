@@ -2,8 +2,6 @@ package com.tracing.lab;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings({"unchecked"})
-public class ComplexBodyParams extends GenericParams<ComplexBodyParams> {
-    public ComplexBodyParams(Map<String, Object> params) {
+public class AnimalSearchParams extends GenericParams<AnimalSearchParams> {
+    public AnimalSearchParams(Map<String, Object> params) {
         super(params);
     }
 
@@ -23,17 +21,17 @@ public class ComplexBodyParams extends GenericParams<ComplexBodyParams> {
         return (List<String>) this.getOrDefault("empresas", Collections.emptyList());
     }
 
-    public Complexo getComplexo() {
-        return new Complexo((Map<String, Object>) this.getOrDefault("complexo", null));
+    public InnerFilters innerFilters() {
+        return new InnerFilters((Map<String, Object>) this.getOrDefault("moreFilters", null));
     }
 
     @Getter
-    public class Complexo {
+    public class InnerFilters {
         private String at1;
         private Boolean at2;
         private Integer at3;
 
-        public Complexo(Map<String, Object> values) {
+        public InnerFilters(Map<String, Object> values) {
             Objects.requireNonNull(values, "values não podem ser nulo");
             this.at1 = (String) values.getOrDefault("at1", null);
             this.at2 = (Boolean) values.getOrDefault("at2", null);

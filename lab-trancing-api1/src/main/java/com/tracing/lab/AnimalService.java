@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class AnimalService implements FindService<AnimalParams, ComplexBodyParams> {
+public class AnimalService implements FindService<AnimalParams, AnimalSearchParams> {
     @Override
     public boolean match(String model) {
         return "dfe".equals(model);
@@ -36,7 +36,7 @@ public class AnimalService implements FindService<AnimalParams, ComplexBodyParam
     }
 
     @Override
-    public SearchResult<Animal> filter(String model, String tipo, ComplexBodyParams params) {
+    public SearchResult<Animal> filter(String model, String tipo, AnimalSearchParams params) {
         log.info("Filtrando Animal [{}], Model [{}], Tipo [{}]", params, model, tipo);
         var animal = new Animal(model, tipo, 2);
         return new SearchResult<Animal>(List.of(animal), model, tipo, LocalDateTime.now(), params.toString());
