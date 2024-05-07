@@ -11,9 +11,15 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CarService implements FindService<CarParams, CarSearchParams> {
+
     @Override
-    public boolean match(String model) {
-        return "evento".equals(model);
+    public String getTipo() {
+        return "evento";
+    }
+
+    @Override
+    public String getModelo() {
+        return "nfcom";
     }
 
     @Override

@@ -11,7 +11,8 @@ import java.util.Optional;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public interface FindService<T extends RequestParams<?>, C extends GenericParams<?>> {
 
-    boolean match(String model);
+    String getTipo();
+    String getModelo();
     Optional<GetResult<?>> getById(String model, String tipo, String id);
     SearchResult filter(String model, String tipo, T params);
     T params(Map<String, List<String>> params);

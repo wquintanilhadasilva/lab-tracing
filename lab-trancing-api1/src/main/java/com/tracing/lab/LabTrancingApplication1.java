@@ -38,11 +38,11 @@ public class LabTrancingApplication1 {
 	}
 
 	@RestController
-	@RequestMapping("/api/requests/{modelo}/{tipo}")
+	@RequestMapping("/api/requests/{tipo}/{modelo}")
 	@RequiredArgsConstructor
 	class SearchController {
 
-		private final List<FindService> findServices;
+		private final ServiceCatalog serviceCatalog;
 
 		@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 		ResponseEntity<GetResult> getById(@PathVariable("modelo") String modelo,
@@ -50,9 +50,7 @@ public class LabTrancingApplication1 {
 											 @PathVariable("id") String id) {
 			log.info("Consultando modelo [{}] tipo [{}] com id: [{}]", modelo, tipo, id);
 			ResponseEntity<GetResult> notFound = ResponseEntity.ofNullable(null);
-			Optional<GetResult> result = findServices.stream()
-                    .filter(s -> s.match(modelo))
-                    .findFirst()
+			Optional<GetResult> result = serviceCatalog.getService(modelo, tipo)
 					.flatMap(c -> c.getById(modelo, tipo, id));
 			return result.map(ResponseEntity::ok)
 					.orElse(notFound);
@@ -63,9 +61,7 @@ public class LabTrancingApplication1 {
 												   @PathVariable("tipo") String tipo,
 												   @RequestParam(required = false) Map<String, List<String>> params) {
 			log.info("Pesquisando modelo [{}] Tipo [{}] com os parâmetros: [{}]", modelo, tipo, params);
-			SearchResult result = findServices.stream()
-					.filter(s -> s.match(modelo))
-					.findAny()
+			SearchResult result = serviceCatalog.getService(modelo, tipo)
 					.map(s -> s.filter(modelo, tipo, s.params(params)))
 					.orElse(null);
 			return new ResponseEntity<SearchResult>(result, HttpStatus.OK);
@@ -76,10 +72,7 @@ public class LabTrancingApplication1 {
 									      @PathVariable("tipo") String tipo,
 									      @RequestBody (required = true) Map<String, Object> params) {
 			log.info("Pesquisa POST modelo [{}] Tipo [{}] com os parâmetros: [{}]", modelo, tipo, params);
-
-			SearchResult result = findServices.stream()
-					.filter(s -> s.match(modelo))
-					.findAny()
+			SearchResult result =  serviceCatalog.getService(modelo, tipo)
 					.map(s -> s.filter(modelo, tipo, s.buildParam(params)))
 					.orElse(null);
 			return new ResponseEntity<SearchResult>(result, HttpStatus.OK);

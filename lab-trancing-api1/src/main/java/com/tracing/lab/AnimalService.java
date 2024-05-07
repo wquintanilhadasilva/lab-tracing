@@ -11,9 +11,15 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class AnimalService implements FindService<AnimalParams, AnimalSearchParams> {
+
     @Override
-    public boolean match(String model) {
-        return "dfe".equals(model);
+    public String getTipo() {
+        return "dfe";
+    }
+
+    @Override
+    public String getModelo() {
+        return "nfcom";
     }
 
     @Override
