@@ -18,7 +18,7 @@ public class ServiceCatalog {
         servicesMap = servicesList.stream()
             .collect(Collectors.toMap(
                 k -> key(k.getModelo(), k.getTipo()),
-                s -> s,
+                v -> v,
                 (existing, replacement) -> {
                     throw new RuntimeException(STR."Já existe uma implementação para o modelo \{existing.getModelo()} e \{existing.getTipo()}");
                 },
