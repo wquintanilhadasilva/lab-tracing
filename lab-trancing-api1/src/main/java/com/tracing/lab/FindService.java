@@ -1,6 +1,5 @@
 package com.tracing.lab;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -17,6 +16,9 @@ public interface FindService<T extends RequestParams<?>, C extends GenericParams
     SearchResult filter(String model, String tipo, T params);
     T params(Map<String, List<String>> params);
     SearchResult filter(String model, String tipo, C params);
+    default SearchResult filter(String model, String tipo, Map<String, Object> params) {
+        return this.filter(model, tipo, buildParam(params));
+    }
 
     default public C buildParam(Map<String, Object> o) {
         try {
